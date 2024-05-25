@@ -1,8 +1,9 @@
 package ru.panov.homeworck.service.impl;
 
 import ru.panov.homeworck.model.Ticket;
-import ru.panov.homeworck.repository.Repository;
-import ru.panov.homeworck.repository.impl.RepositoryImpl;
+import ru.panov.homeworck.parser.JsonParser;
+import ru.panov.homeworck.parser.impl.JsonParserImpl;
+import ru.panov.homeworck.root.Root;
 import ru.panov.homeworck.service.Service;
 
 import java.util.ArrayList;
@@ -11,7 +12,8 @@ import java.util.stream.Collectors;
 
 public class ServiceImpl implements Service {
 
-    private final Repository repository = new RepositoryImpl();
+    private  final JsonParser parser = new JsonParserImpl();
+    private final Root root = parser.parse();
 
     /**
      * Получаем список всех рейсов
@@ -21,7 +23,7 @@ public class ServiceImpl implements Service {
      */
     @Override
     public List<Ticket> getOriginDestination(String origin, String destination) {
-        return repository.getTickets()
+        return root.getTickets()
                 .stream()
                 .filter(e -> e.getOriginName().equals(origin))
                 .filter(e -> e.getDestinationName().equals(destination))
@@ -51,7 +53,7 @@ public class ServiceImpl implements Service {
     @Override
     public Double getMedian(String origin, String destination) {
         List<Integer> list = new ArrayList<>();
-        Double median;
+        double median;
         for (Ticket ticket : this.getOriginDestination(origin, destination)) {
             int price = ticket.getPrice();
             list.add(price);

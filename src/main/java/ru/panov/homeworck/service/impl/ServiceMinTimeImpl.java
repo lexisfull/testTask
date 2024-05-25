@@ -1,10 +1,12 @@
 package ru.panov.homeworck.service.impl;
 
 import ru.panov.homeworck.model.Ticket;
-import ru.panov.homeworck.parser.TimeParser;
-import ru.panov.homeworck.parser.impl.TimeParserImpl;
 import ru.panov.homeworck.service.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,14 +16,21 @@ import java.util.stream.Collectors;
 
 public class ServiceMinTimeImpl {
 
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd HH:mm");
+    private final ZoneId zoneId = ZoneId.systemDefault();
     private final Service service = new ServiceImpl();
-    private final TimeParser timeParser = new TimeParserImpl();
     private List<Ticket> tickets;
     private List<Ticket> newTickets;
     private List<Ticket> ticketsCarrier;
     private List<String> printList;
     private Map<String, List<Ticket>> ticketsMap;
 
+    /**
+     * Ложим в хешмап списки вылетов компаний
+     * @param origin город вылета
+     * @param destination город прибытия
+     * @return возвоащаем хэшмап
+     */
     private Map<String, List<Ticket>> getMapTicketByCarrier(String origin, String destination){
         ticketsMap = new HashMap<>();
         tickets = service.getOriginDestination(origin, destination);
@@ -37,6 +46,13 @@ public class ServiceMinTimeImpl {
         return ticketsMap;
     }
 
+    /**
+     * Получаем минимальное время вылета
+     * @param origin город вылета
+     * @param destination город прибытия
+     * @return возвращаем лист строк компания время полета
+     * внутри вызывается метод timeParser.countDaysBetween расчитывающий время в пути
+     */
     public List<String> getMinTimeByCarrierTickets(String origin, String destination) {
         Map<String, List<Ticket>> ticketsMap = getMapTicketByCarrier(origin, destination);
         printList = new ArrayList<>();
@@ -47,7 +63,7 @@ public class ServiceMinTimeImpl {
 
             if (ticketsCarrier.size() == 1){
                 printList.add(ticketsCarrier.get(0).getCarrier() + " "
-                                + (timeParser.countDaysBetween(ticketsCarrier.get(0).getDepartureDate()
+                                + (countDaysBetween(ticketsCarrier.get(0).getDepartureDate()
                                 + " " + ticketsCarrier.get(0).getDepartureTime()
                         ,ticketsCarrier.get(0).getArrivalDate()
                                 + " " + checkLengthOfString(ticketsCarrier.get(0).getArrivalTime()))));
@@ -55,12 +71,12 @@ public class ServiceMinTimeImpl {
 
             for (int i = 0; i < ticketsCarrier.size() - 1; i++) {
 
-                start = timeParser.countDaysBetween(ticketsCarrier.get(i).getDepartureDate()
+                start = countDaysBetween(ticketsCarrier.get(i).getDepartureDate()
                                 + " " + ticketsCarrier.get(i).getDepartureTime()
                                             ,ticketsCarrier.get(i).getArrivalDate()
                                 + " " + checkLengthOfString(ticketsCarrier.get(i).getArrivalTime()));
 
-                end = timeParser.countDaysBetween(ticketsCarrier.get(i + 1).getDepartureDate()
+                end = countDaysBetween(ticketsCarrier.get(i + 1).getDepartureDate()
                                 + " " + checkLengthOfString(ticketsCarrier.get(i + 1).getDepartureTime())
                         ,ticketsCarrier.get(i + 1).getArrivalDate()
                                 + " " + checkLengthOfString(ticketsCarrier.get(i + 1).getArrivalTime()));
@@ -92,6 +108,27 @@ public class ServiceMinTimeImpl {
             return "0" + str;
         }
         return str;
+    }
+
+    /**
+     * @param start дата и время вылета
+     * @param end дата и время прибытия
+     * @throw при введении аргументов null
+     * возвращаемое значение long в минутах
+     */
+    public long countDaysBetween(String start, String end){
+
+        LocalDateTime startDateTime = LocalDateTime.parse(start, formatter).atZone(zoneId).toLocalDateTime();
+        LocalDateTime endDateTime = LocalDateTime.parse(end, formatter).atZone(zoneId).toLocalDateTime();
+
+        if(startDateTime == null || endDateTime == null)
+        {
+            throw new IllegalArgumentException("No such a date");
+        }
+
+        long daysBetween = ChronoUnit.MINUTES.between(startDateTime, endDateTime);
+
+        return daysBetween;
     }
 
 
