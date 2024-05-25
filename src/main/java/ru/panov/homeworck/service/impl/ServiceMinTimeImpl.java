@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
+/**
+ * Класс получает компанию и минимальное время в пути для нее
+ */
 public class ServiceMinTimeImpl {
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd HH:mm");
@@ -78,7 +80,7 @@ public class ServiceMinTimeImpl {
 
                 end = countDaysBetween(ticketsCarrier.get(i + 1).getDepartureDate()
                                 + " " + checkLengthOfString(ticketsCarrier.get(i + 1).getDepartureTime())
-                        ,ticketsCarrier.get(i + 1).getArrivalDate()
+                                            ,ticketsCarrier.get(i + 1).getArrivalDate()
                                 + " " + checkLengthOfString(ticketsCarrier.get(i + 1).getArrivalTime()));
 
                 while (!ticketsCarrier.isEmpty()) {
@@ -111,6 +113,7 @@ public class ServiceMinTimeImpl {
     }
 
     /**
+     * Расчет времени в полете
      * @param start дата и время вылета
      * @param end дата и время прибытия
      * @throw при введении аргументов null

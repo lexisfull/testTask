@@ -15,13 +15,15 @@ public class App {
         ServiceMinTimeImpl serviceMinTime = new ServiceMinTimeImpl();
         Double median = service.getMedian(start, stop);
 
-        System.out.println(median);
+        System.out.println("Медиана цены - " + median);
         System.out.println("-------------");
 
-        System.out.println(service.getArithmeticAverage(start, stop));
+        System.out.println("Среднее арифметическое цены - " + service.getArithmeticAverage(start, stop));
         System.out.println("-------------");
-        System.out.println(service.getDifference(start, stop));
+        System.out.println("Разница между медианой и средней ценой - " + service.getDifference(start, stop));
         System.out.println("-------------");
+        System.out.println("Минимальнаое время пути для каждой компании.\n" +
+                "Первое - компания, второе время в минутах.");
         for (String str : serviceMinTime.getMinTimeByCarrierTickets(start, stop)){
             System.out.println(str);
         }
