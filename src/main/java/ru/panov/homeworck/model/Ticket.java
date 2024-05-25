@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-/*
+/**
  * Модель класса Ticket
  */
 @FieldDefaults(level = AccessLevel.PRIVATE)

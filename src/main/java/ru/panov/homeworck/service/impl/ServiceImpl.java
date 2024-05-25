@@ -13,6 +13,12 @@ public class ServiceImpl implements Service {
 
     private final Repository repository = new RepositoryImpl();
 
+    /**
+     * Получаем список всех рейсов
+     * @param origin город вылета
+     * @param destination город прибытия
+     * @return возвращвем список
+     */
     @Override
     public List<Ticket> getOriginDestination(String origin, String destination) {
         return repository.getTickets()
@@ -22,6 +28,12 @@ public class ServiceImpl implements Service {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Получаем среднее арифметическое стоимости
+     * @param origin город вылета
+     * @param destination город прибытия
+     * @return возвращаем Double
+     */
     @Override
     public Double getArithmeticAverage(String origin, String destination) {
         return this.getOriginDestination(origin, destination)
@@ -30,6 +42,12 @@ public class ServiceImpl implements Service {
                 .average().orElse(Double.NaN);
     }
 
+    /**
+     * Высчитываем медиану стоимости
+     * @param origin город вылетв
+     * @param destination город прибытия
+     * @return возвращаем Double
+     */
     @Override
     public Double getMedian(String origin, String destination) {
         List<Integer> list = new ArrayList<>();
@@ -47,6 +65,12 @@ public class ServiceImpl implements Service {
         return median;
     }
 
+    /**
+     * Высчитывам разницу между медианой и средней ценой
+     * @param origin город вылета
+     * @param destination город прибытия
+     * @return возвращаем Double
+     */
     @Override
     public Double getDifference(String origin, String destination) {
         double difference = getArithmeticAverage(origin, destination) - getMedian(origin, destination);

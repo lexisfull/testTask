@@ -8,6 +8,9 @@ import ru.panov.homeworck.root.Root;
 
 import java.util.List;
 
+/**
+ * Хранит все объекты используется в качестве репозитория
+ */
 public class RepositoryImpl implements Repository {
 
     private  final JsonParser parser = new JsonParserImpl();

@@ -8,7 +8,7 @@ import ru.panov.homeworck.parser.JsonParser;
 import java.io.FileReader;
 import java.io.IOException;
 
-/*
+/**
  * Парсер JSON, используется библиотека Gson
  */
 public class JsonParserImpl implements JsonParser {

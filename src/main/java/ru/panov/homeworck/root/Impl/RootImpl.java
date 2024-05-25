@@ -9,6 +9,9 @@ import ru.panov.homeworck.root.Root;
 
 import java.util.ArrayList;
 
+/**
+ * Корневой класс для хранения моделей после сериализации
+ */
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @ToString
