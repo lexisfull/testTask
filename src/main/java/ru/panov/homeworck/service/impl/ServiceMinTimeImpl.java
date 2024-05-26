@@ -29,6 +29,7 @@ public class ServiceMinTimeImpl {
 
     /**
      * Ложим в хешмап списки вылетов компаний
+     * отсортированную по компаниям
      * @param origin город вылета
      * @param destination город прибытия
      * @return возвоащаем хэшмап
