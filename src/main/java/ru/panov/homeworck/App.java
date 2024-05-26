@@ -1,6 +1,7 @@
 package ru.panov.homeworck;
 
 import ru.panov.homeworck.service.Service;
+import ru.panov.homeworck.service.ServiceMinTime;
 import ru.panov.homeworck.service.impl.ServiceImpl;
 import ru.panov.homeworck.service.impl.ServiceMinTimeImpl;
 
@@ -12,7 +13,7 @@ public class App {
         String stop = "Тель-Авив";
 
         Service service = new ServiceImpl();
-        ServiceMinTimeImpl serviceMinTime = new ServiceMinTimeImpl();
+        ServiceMinTime serviceMinTime = new ServiceMinTimeImpl();
         Double median = service.getMedian(start, stop);
 
         System.out.println("Медиана цены - " + median);

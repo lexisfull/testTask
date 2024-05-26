@@ -2,6 +2,7 @@ package ru.panov.homeworck.service.impl;
 
 import ru.panov.homeworck.model.Ticket;
 import ru.panov.homeworck.service.Service;
+import ru.panov.homeworck.service.ServiceMinTime;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 /**
  * Класс получает компанию и минимальное время в пути для нее
  */
-public class ServiceMinTimeImpl {
+public class ServiceMinTimeImpl implements ServiceMinTime {
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd HH:mm");
     private final ZoneId zoneId = ZoneId.systemDefault();
